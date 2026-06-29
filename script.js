@@ -1,84 +1,93 @@
-const phones = {
-  "tecno spark 5 pro": {
-    general: 195,
-    redDot: 190,
-    scope2x: 180,
-    scope4x: 170,
-    sniper: 100,
-    freeLook: 75
-  },
-  "iphone 13": {
-    general: 200,
-    redDot: 195,
-    scope2x: 185,
-    scope4x: 175,
-    sniper: 100,
-    freeLook: 80
-  }
-};
+let phones = {};
 
-document.querySelector("button").addEventListener("click", function () {
-  const phone = document
-    .getElementById("searchBox")
-    .value
-    .toLowerCase()
-    .trim();
-
-  const result = document.getElementById("result");
-
-  if (phones[phone]) {
-    const s = phones[phone];
-    result.innerHTML = `
-      <h2>Recommended Sensitivity</h2>
-      <p>General: ${s.general}</p>
-      <p>Red Dot: ${s.redDot}</p>
-      <p>2× Scope: ${s.scope2x}</p>
-      <p>4× Scope: ${s.scope4x}</p>
-      <p>Sniper: ${s.sniper}</p>
-      <p>Free Look: ${s.freeLook}</p>
-    `;
-  } else {
-    result.innerHTML = "<p>❌ Phone not found. More devices will be added soon.</p>";
-  }
-});
 const searchBox = document.getElementById("searchBox");
 const suggestions = document.getElementById("suggestions");
+const result = document.getElementById("result");
+const searchBtn = document.getElementById("searchBtn");
+const loading = document.getElementById("loading");
 
-searchBox.addEventListener("input", function () {
+// Load phone database
+fetch("phones.json")
+  .then(response => response.json())
+  .then(data => {
+    data.forEach(phone => {
+      phones[phone.model.toLowerCase()] = phone;
+    });
+  });
 
-    const value = this.value.toLowerCase().trim();
+function searchPhone() {
 
-    suggestions.innerHTML = "";
+  const phoneName = searchBox.value.toLowerCase().trim();
 
-    if (value === "") return;
+  loading.style.display = "block";
+  result.innerHTML = "";
 
-    Object.keys(phones).forEach(function(phone){
+  setTimeout(() => {
 
-        if(phone.includes(value)){
+    loading.style.display = "none";
 
-            const item = document.createElement("div");
+    if (!phones[phoneName]) {
+      result.innerHTML = "<h2>❌ Phone not found</h2>";
+      return;
+    }
 
-            item.className = "suggestion";
+    const p = phones[phoneName];
 
-            item.textContent = phone;
+    result.innerHTML = `
+      <h2>📱 ${p.model}</h2>
 
-            item.onclick = function(){
+      <p><strong>Brand:</strong> ${p.brand}</p>
+      <p><strong>RAM:</strong> ${p.ram} GB</p>
+      <p><strong>Processor:</strong> ${p.processor}</p>
+      <p><strong>Refresh Rate:</strong> ${p.refreshRate}Hz</p>
 
-                searchBox.value = phone;
+      <hr><br>
 
-                suggestions.innerHTML = "";
+      <p>✅ Automatic sensitivity calculation coming next...</p>
+    `;
+
+  },500);
+
+}
+
+searchBtn.onclick = searchPhone;
+
+searchBox.addEventListener("keyup",function(e){
+
+    if(e.key==="Enter"){
+        searchPhone();
+    }
+
+    suggestions.innerHTML="";
+
+    const value=this.value.toLowerCase();
+
+    if(value==="") return;
+
+    Object.keys(phones).forEach(function(name){
+
+        if(name.includes(value)){
+
+            const div=document.createElement("div");
+
+            div.className="suggestion";
+
+            div.innerText=phones[name].model;
+
+            div.onclick=function(){
+
+                searchBox.value=phones[name].model;
+
+                suggestions.innerHTML="";
+
+                searchPhone();
 
             };
 
-            suggestions.appendChild(item);
+            suggestions.appendChild(div);
 
         }
 
     });
 
-});
-searchBox.addEventListener("keypress", function(event) {
-    if (event.key === "Enter") {
-        document.querySelector("button").click();
-    }
 });
