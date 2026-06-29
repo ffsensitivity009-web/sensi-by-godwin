@@ -1,0 +1,41 @@
+[
+  {
+    "brand": "Tecno",
+    "model": "Tecno Spark 5 Pro",
+    "ram": "4GB",
+    "processor": "Helio P22",
+    "refreshRate": "60Hz",
+    "general": 195,
+    "redDot": 190,
+    "scope2x": 180,
+    "scope4x": 170,
+    "sniper": 100,
+    "freeLook": 75
+  },
+  {
+    "brand": "Tecno",
+    "model": "Tecno Pova 6",
+    "ram": "8GB",
+    "processor": "Helio G99 Ultimate",
+    "refreshRate": "120Hz",
+    "general": 200,
+    "redDot": 195,
+    "scope2x": 188,
+    "scope4x": 180,
+    "sniper": 100,
+    "freeLook": 80
+  },
+  {
+    "brand": "Infinix",
+    "model": "Infinix Hot 40 Pro",
+    "ram": "8GB",
+    "processor": "Helio G99",
+    "refreshRate": "120Hz",
+    "general": 200,
+    "redDot": 196,
+    "scope2x": 186,
+    "scope4x": 176,
+    "sniper": 100,
+    "freeLook": 80
+  }
+]
